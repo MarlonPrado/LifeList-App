@@ -1,4 +1,4 @@
-package com.example.helloeveryone.ui.theme
+package com.example.jetpackcompose.ui.theme
 
 import android.app.Activity
 import android.os.Build
@@ -38,7 +38,7 @@ private val LightColorScheme = lightColorScheme(
 )
 
 @Composable
-fun HelloEveryoneTheme(
+fun JetpackComposeTheme(
     darkTheme: Boolean = isSystemInDarkTheme(),
     // Dynamic color is available on Android 12+
     dynamicColor: Boolean = true,

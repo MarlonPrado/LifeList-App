@@ -1,3 +1,8 @@
 <resources>
-    <string name="app_name">Life List</string>
+    <string name="app_name">LifeListApp</string>
+
+    <string name="home">Home</string>
+    <string name="task">Task</string>
+    <string name="taskfinished">TaskFinished</string>
+    <string name="profile">Profile</string>
 </resources>

@@ -1,4 +1,4 @@
-package com.example.helloeveryone
+package com.example.jetpackcompose
 
 import org.junit.Test
 
