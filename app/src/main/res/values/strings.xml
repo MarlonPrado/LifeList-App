@@ -3,6 +3,7 @@
 
     <string name="home">Home</string>
     <string name="task">Task</string>
+    <string name="tasksd">Task %d</string>
     <string name="taskfinished">TaskFinished</string>
     <string name="profile">Profile</string>
     <string name="fetch_the_ball">Fetch the ball</string>
@@ -30,4 +31,29 @@
     <string name="practice_recall_training">Practice recall training</string>
     <string name="go_camping_with_your_human">Go camping with your human</string>
     <string name="visit_a_dog_friendly_restaurant">Visit a dog-friendly restaurant</string>
+    <string name="fecha1">2023-04-20</string>
+    <string name="fecha2">2023-04-19</string>
+    <string name="fecha3">2023-04-18</string>
+    <string name="fecha4">2023-04-17</string>
+    <string name="fecha5">2023-04-16</string>
+    <string name="fecha6">2023-04-15</string>
+    <string name="fecha7">2023-04-14</string>
+    <string name="fecha8">2023-04-13</string>
+    <string name="fecha9">2023-04-12</string>
+    <string name="fecha10">2023-04-11</string>
+    <string name="fecha11">2023-04-10</string>
+    <string name="fecha12">2023-04-09</string>
+    <string name="fecha13">2023-04-08</string>
+    <string name="fecha14">2023-04-07</string>
+    <string name="fecha15">2023-04-06</string>
+    <string name="fecha16">2023-04-05</string>
+    <string name="fecha17">2023-04-04</string>
+    <string name="fecha18">2023-04-03</string>
+    <string name="fecha19">2023-04-02</string>
+    <string name="fecha20">2023-04-01</string>
+    <string name="fecha21">2023-03-30</string>
+    <string name="fecha22">2023-03-29</string>
+    <string name="fecha23">2023-03-28</string>
+    <string name="fecha24">2023-03-27</string>
+    <string name="fecha25">2023-03-26</string>
 </resources>

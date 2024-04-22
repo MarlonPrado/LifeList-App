@@ -15,6 +15,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
@@ -97,5 +98,46 @@ fun MyAppBottomNavigation(
                 }
             )
         }
+    }
+}
+
+/**
+ * Composable that displays what the UI of the app looks like in light theme in the design tab.
+ */
+@Preview
+@Composable
+fun JetpackComposePreview() {
+    JetpackComposeTheme(darkTheme = false) {
+        val navController = rememberNavController()
+        val navigateAction = remember(navController) {
+            MyAppNavigationActions(navController)
+        }
+        val navBackStackEntry by navController.currentBackStackEntryAsState()
+        val selectedDestination = navBackStackEntry?.destination?.route ?: MyAppRoute.HOME
+
+        MyAppContent(
+            navController = navController,
+            selectedDestination = selectedDestination,
+            navigateTopLevelDestination = navigateAction::navigateTo
+        )
+    }
+}
+
+@Preview
+@Composable
+fun JetpackComposeThemePreview() {
+    JetpackComposeTheme(darkTheme = true) {
+        val navController = rememberNavController()
+        val navigateAction = remember(navController) {
+            MyAppNavigationActions(navController)
+        }
+        val navBackStackEntry by navController.currentBackStackEntryAsState()
+        val selectedDestination = navBackStackEntry?.destination?.route ?: MyAppRoute.HOME
+
+        MyAppContent(
+            navController = navController,
+            selectedDestination = selectedDestination,
+            navigateTopLevelDestination = navigateAction::navigateTo
+        )
     }
 }
