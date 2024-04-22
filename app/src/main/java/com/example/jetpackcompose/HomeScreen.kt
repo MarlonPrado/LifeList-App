@@ -66,24 +66,7 @@ fun WoofApp() {
         }
     }
 }
-/**@OptIn(ExperimentalMaterial3Api::class)
-@Composable
-fun HomeScreen() {
-    Scaffold(
-        topBar = {
-            WoofTopAppBar()
-        }
-    ) { paddingValues ->
-        LazyColumn(contentPadding = paddingValues) {
-            items(tasks) {
-                taskItem(
-                    task = it,
-                    modifier = Modifier.padding(dimensionResource(R.dimen.padding_small))
-                )
-            }
-        }
-    }
-}*/
+
 /**
  * Composable that displays a list item containing a dog icon and their information.
  *
@@ -99,10 +82,12 @@ fun TaskItem(
         modifier = modifier
     ) {
         Row(
+            verticalAlignment = Alignment.CenterVertically,
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(dimensionResource(R.dimen.padding_small))
         ) {
+            Spacer(modifier = Modifier.width(50.dp))
             TaskInformation(task.id, task.name, task.createdDate)
         }
     }
@@ -154,15 +139,19 @@ fun TaskInformation(
             style = MaterialTheme.typography.displayMedium,
             modifier = Modifier.padding(top = dimensionResource(id = R.dimen.padding_small))
         )
+        Text(
+            text = stringResource(taskName),
+            style = MaterialTheme.typography.bodyLarge
+        )
         Row(
             modifier = Modifier.padding(top = dimensionResource(id = R.dimen.padding_small)),
             verticalAlignment = Alignment.CenterVertically
         ){
             Text(
-                text = stringResource(taskName),
-                style = MaterialTheme.typography.bodyLarge
+                text = stringResource(createdDate),
+                style = MaterialTheme.typography.displayMedium
             )
-            Spacer(modifier = Modifier.width(16.dp))
+            Spacer(modifier = Modifier.width(50.dp))
 
             Button(
                 onClick = {}
@@ -171,11 +160,6 @@ fun TaskInformation(
                 Text(text = "Done")
             }
         }
-
-        Text(
-            text = stringResource(createdDate),
-            style = MaterialTheme.typography.displayMedium
-        )
     }
 }
 
