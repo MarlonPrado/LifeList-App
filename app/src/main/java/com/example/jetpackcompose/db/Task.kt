@@ -8,7 +8,7 @@ data class Task(
     @StringRes val createdDate: Int
 )
 
-val tasks = listOf(
+val tasks = mutableListOf(
     Task(1, R.string.fetch_the_ball, R.string.fecha1),
     Task(2, R.string.enjoy_a_relaxing_nap, R.string.fecha2),
     Task(3, R.string.play_with_squeaky_toys, R.string.fecha3),
