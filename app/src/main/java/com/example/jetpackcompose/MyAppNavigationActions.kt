@@ -1,5 +1,4 @@
 package com.example.jetpackcompose
-
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.AccountCircle
 import androidx.compose.material.icons.filled.Add
@@ -9,6 +8,7 @@ import androidx.compose.material.icons.filled.Settings
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.NavHostController
+import com.example.jetpackcompose.R
 
 class MyAppNavigationActions(private val navController: NavHostController) {
     fun navigateTo(destination: MyAppTopLevelDestination) {
@@ -26,7 +26,6 @@ data class MyAppTopLevelDestination(
     val selectedIcon: ImageVector,
     val iconTextId: Int
 )
-
 val TOP_LEVEL_DESTINATIONS = listOf(
     MyAppTopLevelDestination(
         route = MyAppRoute.HOME,
@@ -51,8 +50,9 @@ val TOP_LEVEL_DESTINATIONS = listOf(
 )
 
 object MyAppRoute {
+    const val LOGIN = "login"
     const val HOME = "home"
-    const val TASK = "account"
-    const val TASKFINISHED = "settings"
-    const val PROFILE = "settings"
+    const val TASK = "task"
+    const val TASKFINISHED = "taskfinished"
+    const val PROFILE = "profile"
 }

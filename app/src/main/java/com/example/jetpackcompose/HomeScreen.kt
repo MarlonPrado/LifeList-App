@@ -1,46 +1,55 @@
 package com.example.jetpackcompose
 
+import android.os.Bundle
+import androidx.activity.ComponentActivity
+import androidx.activity.compose.setContent
+import androidx.annotation.DrawableRes
 import androidx.annotation.StringRes
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
-import androidx.compose.material3.Button
 import androidx.compose.material3.Card
 import androidx.compose.material3.CenterAlignedTopAppBar
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
+import androidx.compose.ui.draw.clip
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.material3.Card
+import androidx.compose.material3.CenterAlignedTopAppBar
 import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.Surface
+import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.jetpackcompose.db.Task
-import com.example.jetpackcompose.db.tasks
-import com.example.jetpackcompose.ui.theme.JetpackComposeTheme
+import com.example.jetpackcompose.db.task
 
-/**
- * Composable that displays an app bar and a list of tasks.
- */
 @Composable
 fun HomeScreen() {
-    Surface(
+    Column(
         modifier = Modifier.fillMaxSize()
     ) {
-        WoofApp()
+        WoofTopAppBar()
     }
 }
 
@@ -57,43 +66,43 @@ fun WoofApp() {
         }
     ) { it ->
         LazyColumn(contentPadding = it) {
-            items(tasks) {
-                TaskItem(
-                    task = it,
-                    modifier = Modifier.padding(dimensionResource(R.dimen.padding_small))
-                )
-            }
+            //items(dogs) {
+            //  DogItem(
+            //    dog = it,
+            //  modifier = Modifier.padding(dimensionResource(R.dimen.padding_small))
+            //)
         }
     }
 }
+
 
 /**
  * Composable that displays a list item containing a dog icon and their information.
  *
- * @param task contains the data that populates the list item
+ * @param dog contains the data that populates the list item
  * @param modifier modifiers to set to this composable
  */
+
+/**
 @Composable
-fun TaskItem(
-    task: Task,
-    modifier: Modifier = Modifier
+fun DogItem(
+dog: Dog,
+modifier: Modifier = Modifier
 ) {
-    Card(
-        modifier = modifier
-    ) {
-        Row(
-            verticalAlignment = Alignment.CenterVertically,
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(dimensionResource(R.dimen.padding_small))
-        ) {
-            Spacer(modifier = Modifier.width(50.dp))
-            TaskInformation(task.id, task.name, task.createdDate)
-        }
-    }
+Card(
+modifier = modifier
+) {
+Row(
+modifier = Modifier
+.fillMaxWidth()
+.padding(dimensionResource(R.dimen.padding_small))
+) {
+DogIcon(dog.imageResourceId)
+DogInformation(dog.name, dog.age)
 }
-
-
+}
+}
+ */
 
 /**
  * Composable that displays a Top Bar with an icon and text.
@@ -127,46 +136,20 @@ fun WoofTopAppBar(modifier: Modifier = Modifier) {
 
 
 @Composable
-fun TaskInformation(
-    taskId: Int,
-    @StringRes taskName: Int,
-    @StringRes createdDate: Int,
-    modifier: Modifier = Modifier
+fun DogInformation(
+@StringRes dogName: Int,
+dogAge: Int,
+modifier: Modifier = Modifier
 ) {
-    Column(modifier = modifier) {
-        Text(
-            text = stringResource(R.string.tasksd, taskId),
-            style = MaterialTheme.typography.displayMedium,
-            modifier = Modifier.padding(top = dimensionResource(id = R.dimen.padding_small))
-        )
-        Text(
-            text = stringResource(taskName),
-            style = MaterialTheme.typography.bodyLarge
-        )
-        Row(
-            modifier = Modifier.padding(top = dimensionResource(id = R.dimen.padding_small)),
-            verticalAlignment = Alignment.CenterVertically
-        ){
-            Text(
-                text = stringResource(createdDate),
-                style = MaterialTheme.typography.displayMedium
-            )
-            Spacer(modifier = Modifier.width(50.dp))
-
-            Button(
-                onClick = {}
-
-            ){
-                Text(text = "Done")
-            }
-        }
-    }
+Column(modifier = modifier) {
+Text(
+text = stringResource(dogName),
+style = MaterialTheme.typography.displayMedium
+)
+Text(   //R.string.years_old
+text = stringResource(dogAge),
+style = MaterialTheme.typography.bodyLarge
+)
+}
 }
 
-@Preview
-@Composable
-fun HomeScreenPreview() {
-    JetpackComposeTheme(darkTheme = false) {
-        WoofApp()
-    }
-}

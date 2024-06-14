@@ -1,5 +1,5 @@
 package com.example.jetpackcompose
-
+import LoginScreen
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -15,12 +15,15 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
+import com.example.jetpackcompose.HomeScreen
+import com.example.jetpackcompose.ProfileScreen
+import com.example.jetpackcompose.TaskFinishedScreen
+import com.example.jetpackcompose.TaskScreen
 import com.example.jetpackcompose.ui.theme.JetpackComposeTheme
 
 class MainActivity : ComponentActivity() {
@@ -33,7 +36,7 @@ class MainActivity : ComponentActivity() {
                     MyAppNavigationActions(navController)
                 }
                 val navBackStackEntry by navController.currentBackStackEntryAsState()
-                val selectedDestination = navBackStackEntry?.destination?.route ?: MyAppRoute.HOME
+                val selectedDestination = navBackStackEntry?.destination?.route ?: MyAppRoute.LOGIN
 
                 MyAppContent(
                     navController = navController,
@@ -57,8 +60,11 @@ fun MyAppContent(
             NavHost(
                 modifier = Modifier.weight(1f),
                 navController = navController,
-                startDestination = MyAppRoute.HOME
+                startDestination = MyAppRoute.LOGIN
             ) {
+                composable(MyAppRoute.LOGIN) {
+                   LoginScreen(navController)
+                }
                 composable(MyAppRoute.HOME) {
                     HomeScreen()
                 }
@@ -72,10 +78,12 @@ fun MyAppContent(
                     ProfileScreen()
                 }
             }
-            MyAppBottomNavigation(
-                selectedDestination = selectedDestination,
-                navigateTopLevelDestination = navigateTopLevelDestination
-            )
+            if (selectedDestination != MyAppRoute.LOGIN) {
+                MyAppBottomNavigation(
+                    selectedDestination = selectedDestination,
+                    navigateTopLevelDestination = navigateTopLevelDestination
+                )
+            }
         }
     }
 }
@@ -98,46 +106,5 @@ fun MyAppBottomNavigation(
                 }
             )
         }
-    }
-}
-
-/**
- * Composable that displays what the UI of the app looks like in light theme in the design tab.
- */
-@Preview
-@Composable
-fun JetpackComposePreview() {
-    JetpackComposeTheme(darkTheme = false) {
-        val navController = rememberNavController()
-        val navigateAction = remember(navController) {
-            MyAppNavigationActions(navController)
-        }
-        val navBackStackEntry by navController.currentBackStackEntryAsState()
-        val selectedDestination = navBackStackEntry?.destination?.route ?: MyAppRoute.HOME
-
-        MyAppContent(
-            navController = navController,
-            selectedDestination = selectedDestination,
-            navigateTopLevelDestination = navigateAction::navigateTo
-        )
-    }
-}
-
-@Preview
-@Composable
-fun JetpackComposeThemePreview() {
-    JetpackComposeTheme(darkTheme = true) {
-        val navController = rememberNavController()
-        val navigateAction = remember(navController) {
-            MyAppNavigationActions(navController)
-        }
-        val navBackStackEntry by navController.currentBackStackEntryAsState()
-        val selectedDestination = navBackStackEntry?.destination?.route ?: MyAppRoute.HOME
-
-        MyAppContent(
-            navController = navController,
-            selectedDestination = selectedDestination,
-            navigateTopLevelDestination = navigateAction::navigateTo
-        )
     }
 }
