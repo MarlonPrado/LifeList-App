@@ -1,5 +1,5 @@
 package com.example.jetpackcompose
-import LoginScreen
+
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -20,10 +20,6 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
-import com.example.jetpackcompose.HomeScreen
-import com.example.jetpackcompose.ProfileScreen
-import com.example.jetpackcompose.TaskFinishedScreen
-import com.example.jetpackcompose.TaskScreen
 import com.example.jetpackcompose.ui.theme.JetpackComposeTheme
 
 class MainActivity : ComponentActivity() {
@@ -63,7 +59,7 @@ fun MyAppContent(
                 startDestination = MyAppRoute.LOGIN
             ) {
                 composable(MyAppRoute.LOGIN) {
-                   LoginScreen(navController)
+                    LoginScreen(navController)
                 }
                 composable(MyAppRoute.HOME) {
                     HomeScreen()
@@ -94,14 +90,14 @@ fun MyAppBottomNavigation(
     navigateTopLevelDestination: (MyAppTopLevelDestination) -> Unit
 ) {
     NavigationBar(modifier = Modifier.fillMaxWidth()) {
-        TOP_LEVEL_DESTINATIONS.forEach { destinations ->
+        TOP_LEVEL_DESTINATIONS.forEach { destination ->
             NavigationBarItem(
-                selected = selectedDestination == destinations.route,
-                onClick = { navigateTopLevelDestination(destinations) },
+                selected = selectedDestination == destination.route,
+                onClick = { navigateTopLevelDestination(destination) },
                 icon = {
                     Icon(
-                        imageVector = destinations.selectedIcon,
-                        contentDescription = stringResource(id = destinations.iconTextId)
+                        imageVector = destination.selectedIcon,
+                        contentDescription = stringResource(id = destination.iconTextId)
                     )
                 }
             )
