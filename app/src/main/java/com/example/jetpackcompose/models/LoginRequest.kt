@@ -1,4 +1,4 @@
-package com.example.jetpackcompose.api
+package com.example.jetpackcompose.models
 
 data class LoginRequest(
     val username: String,

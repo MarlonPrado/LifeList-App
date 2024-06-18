@@ -1,8 +1,11 @@
-package com.example.jetpackcompose
+package com.example.jetpackcompose.viewmodels
+
+import android.content.Context
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.navigation.NavController
-import com.example.jetpackcompose.api.LoginRequest
+import com.example.jetpackcompose.navigation.MyAppRoute
+import com.example.jetpackcompose.models.LoginRequest
 import com.example.jetpackcompose.api.RetrofitInstance
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -22,6 +25,9 @@ class LoginViewModel : ViewModel() {
     private val _isLoading = MutableStateFlow(false)
     val isLoading: StateFlow<Boolean> = _isLoading.asStateFlow()
 
+    private val _isLoggedIn = MutableStateFlow(false)
+    val isLoggedIn: StateFlow<Boolean> = _isLoggedIn.asStateFlow()
+
     fun onUsernameChange(newUsername: String) {
         _username.value = newUsername
     }
@@ -30,7 +36,7 @@ class LoginViewModel : ViewModel() {
         _password.value = newPassword
     }
 
-    fun login(navController: NavController) {
+    fun login(navController: NavController, context: Context) {
         _isLoading.value = true
         _errorMessage.value = null
 
@@ -38,8 +44,17 @@ class LoginViewModel : ViewModel() {
             try {
                 val response = RetrofitInstance.api.login(LoginRequest(_username.value, _password.value))
                 if (response.isSuccessful) {
-                    navController.navigate(MyAppRoute.HOME) {
-                        popUpTo(MyAppRoute.LOGIN) { inclusive = true }
+                    response.body()?.let { loginResponse ->
+                        // Guardar el token en SharedPreferences
+                        val sharedPreferences = context.getSharedPreferences("my_prefs", Context.MODE_PRIVATE)
+                        sharedPreferences.edit().putString("TOKEN", loginResponse.token).apply()
+
+                        _isLoggedIn.value = true  // Indicar que el usuario ha iniciado sesión
+                        navController.navigate(MyAppRoute.HOME) {
+                            popUpTo(MyAppRoute.LOGIN) { inclusive = true }
+                        }
+                    } ?: run {
+                        _errorMessage.value = "Invalid response from server"
                     }
                 } else {
                     _errorMessage.value = "Invalid credentials"

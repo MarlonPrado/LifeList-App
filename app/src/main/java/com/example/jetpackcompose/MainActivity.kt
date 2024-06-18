@@ -20,7 +20,16 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
+import com.example.jetpackcompose.navigation.MyAppNavigationActions
+import com.example.jetpackcompose.navigation.MyAppRoute
+import com.example.jetpackcompose.navigation.MyAppTopLevelDestination
+import com.example.jetpackcompose.navigation.TOP_LEVEL_DESTINATIONS
 import com.example.jetpackcompose.ui.theme.JetpackComposeTheme
+import com.example.jetpackcompose.views.HomeScreen
+import com.example.jetpackcompose.views.LoginScreen
+import com.example.jetpackcompose.views.ProfileScreen
+import com.example.jetpackcompose.views.TaskFinishedScreen
+import com.example.jetpackcompose.views.TaskScreen
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
