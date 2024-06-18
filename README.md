@@ -1,6 +1,10 @@
-<h1 align="center"> <img src="https://i.ibb.co/5TCrjJm/Designer-L3z-OJKkc-U-transformed.png" alt="API REST" width="350" height="350; /></a></h1>
-
+<div align="left">
+<h1 align="center"> <img src="https://i.ibb.co/5TCrjJm/Designer-L3z-OJKkc-U-transformed.png" alt="API REST" width="180" height="180; /></a></h1>
+                      <h1> Life List APP</h1>
+                      </div>
+<h1> Life List APP</h1>
 <div align="center">
+  <h1> Life List APP</h1>
 <img src="https://img.shields.io/static/v1?label=Make+in&message=Kotlin&color=%237F52FF&logo=kotlin" alt="Kotlin"/>
 <img src="https://img.shields.io/static/v1?label=Platform&message=Android&color=%2334A853&logo=android" alt="Android App"/>
 <img src="https://img.shields.io/badge/Autor-Marlon_Prado-000000?logo=GitHub&logoColor=181717" alt="Autor"/>
