@@ -5,6 +5,7 @@ import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.jetpackcompose.api.RetrofitInstance
+import com.example.jetpackcompose.models.CreateTaskRequest
 import com.example.jetpackcompose.models.Task
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -81,6 +82,45 @@ class TaskViewModel : ViewModel() {
                     Log.d("TaskViewModel", "Task status updated successfully")
                 } else {
                     val errorMsg = "Failed to update task status. Error code: ${response.code()}, Error message: ${response.message()}"
+                    _errorMessage.value = errorMsg
+                    Log.e("TaskViewModel", errorMsg)
+                }
+            } catch (e: Exception) {
+                val errorMsg = "An error occurred: ${e.message}"
+                _errorMessage.value = errorMsg
+                Log.e("TaskViewModel", errorMsg)
+            } finally {
+                _isLoading.value = false
+                Log.d("TaskViewModel", "Loading state set to false")
+            }
+        }
+    }
+
+    fun createTask(context: Context, name: String, description: String, priority: Int) {
+        _isLoading.value = true
+        _errorMessage.value = null
+
+        viewModelScope.launch {
+            try {
+                val sharedPreferences = context.getSharedPreferences("my_prefs", Context.MODE_PRIVATE)
+                val token = sharedPreferences.getString("TOKEN", null) ?: throw Exception("Token not found")
+
+                Log.d("TaskViewModel", "Creating task with token: $token")
+
+                // Log para verificar los datos enviados
+                Log.d("TaskViewModel", "Task data - Name: $name, Description: $description, Priority: $priority")
+
+                val createTaskRequest = CreateTaskRequest(name, description, priority)
+                val response = RetrofitInstance.api.createTask(
+                    "Token $token",
+                    createTaskRequest
+                )
+
+                if (response.isSuccessful) {
+                    fetchTasks(context)
+                    Log.d("TaskViewModel", "Task created successfully")
+                } else {
+                    val errorMsg = "Failed to create task. Error code: ${response.code()}, Error message: ${response.message()}"
                     _errorMessage.value = errorMsg
                     Log.e("TaskViewModel", errorMsg)
                 }

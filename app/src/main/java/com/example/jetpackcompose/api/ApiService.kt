@@ -1,8 +1,6 @@
 package com.example.jetpackcompose.api
 
-import com.example.jetpackcompose.models.LoginRequest
-import com.example.jetpackcompose.models.LoginResponse
-import com.example.jetpackcompose.models.TaskResponse
+import com.example.jetpackcompose.models.*
 import retrofit2.Response
 import retrofit2.http.*
 
@@ -19,5 +17,12 @@ interface ApiService {
         @Header("Authorization") authHeader: String,
         @Path("id") taskId: Int,
         @Body status: Map<String, Boolean>
+    ): Response<TaskResponse>
+
+    @Headers("Content-Type: application/json")
+    @POST("/api/tasks/?format=json")
+    suspend fun createTask(
+        @Header("Authorization") authHeader: String,
+        @Body task: CreateTaskRequest
     ): Response<TaskResponse>
 }

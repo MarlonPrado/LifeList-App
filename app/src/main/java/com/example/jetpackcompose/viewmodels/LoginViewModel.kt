@@ -4,9 +4,9 @@ import android.content.Context
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.navigation.NavController
-import com.example.jetpackcompose.navigation.MyAppRoute
 import com.example.jetpackcompose.models.LoginRequest
 import com.example.jetpackcompose.api.RetrofitInstance
+import com.example.jetpackcompose.navigation.MyAppRoute
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -45,11 +45,13 @@ class LoginViewModel : ViewModel() {
                 val response = RetrofitInstance.api.login(LoginRequest(_username.value, _password.value))
                 if (response.isSuccessful) {
                     response.body()?.let { loginResponse ->
-                        // Guardar el token en SharedPreferences
                         val sharedPreferences = context.getSharedPreferences("my_prefs", Context.MODE_PRIVATE)
-                        sharedPreferences.edit().putString("TOKEN", loginResponse.token).apply()
-
-                        _isLoggedIn.value = true  // Indicar que el usuario ha iniciado sesión
+                        with(sharedPreferences.edit()) {
+                            putString("TOKEN", loginResponse.token)
+                            putString("USERNAME", _username.value)
+                            apply()
+                        }
+                        _isLoggedIn.value = true
                         navController.navigate(MyAppRoute.HOME) {
                             popUpTo(MyAppRoute.LOGIN) { inclusive = true }
                         }

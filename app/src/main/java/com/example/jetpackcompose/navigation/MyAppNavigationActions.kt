@@ -1,5 +1,6 @@
 package com.example.jetpackcompose.navigation
 
+import android.content.Context
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.AccountCircle
 import androidx.compose.material.icons.filled.Add
@@ -17,6 +18,17 @@ class MyAppNavigationActions(private val navController: NavHostController) {
                 saveState = true
             }
             launchSingleTop = true
+        }
+    }
+
+    fun logoutAndNavigateToLogin(context: Context) {
+        val sharedPreferences = context.getSharedPreferences("my_prefs", Context.MODE_PRIVATE)
+        with(sharedPreferences.edit()) {
+            remove("TOKEN")
+            apply()
+        }
+        navController.navigate(MyAppRoute.LOGIN) {
+            popUpTo(0) { inclusive = true }
         }
     }
 }

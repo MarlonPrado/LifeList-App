@@ -13,13 +13,14 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.dimensionResource
 import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.navigation.NavHostController
 import com.example.jetpackcompose.R
 import com.example.jetpackcompose.models.Task
 import com.example.jetpackcompose.viewmodels.TaskViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun TaskFinishedScreen() {
+fun TaskFinishedScreen(navController: NavHostController) {
     val taskViewModel: TaskViewModel = viewModel()
     val tasks by taskViewModel.tasks.collectAsState()
     val isLoading by taskViewModel.isLoading.collectAsState()

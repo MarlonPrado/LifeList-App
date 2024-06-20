@@ -71,16 +71,16 @@ fun MyAppContent(
                     LoginScreen(navController)
                 }
                 composable(MyAppRoute.HOME) {
-                    HomeScreen()
+                    HomeScreen(navController)
                 }
                 composable(MyAppRoute.TASK) {
-                    TaskScreen()
+                    TaskScreen(navController)
                 }
                 composable(MyAppRoute.TASKFINISHED) {
-                    TaskFinishedScreen()
+                    TaskFinishedScreen(navController)
                 }
                 composable(MyAppRoute.PROFILE) {
-                    ProfileScreen()
+                    ProfileScreen(navController)
                 }
             }
             if (selectedDestination != MyAppRoute.LOGIN) {
