@@ -3,8 +3,6 @@ package com.example.jetpackcompose.views
 import android.content.Context
 import android.util.Log
 import android.widget.Toast
-import androidx.annotation.StringRes
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
@@ -14,9 +12,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.dimensionResource
-import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.jetpackcompose.R
 import com.example.jetpackcompose.models.Task
@@ -35,12 +30,14 @@ fun HomeScreen() {
     // Fetch tasks on screen load
     LaunchedEffect(Unit) {
         taskViewModel.fetchTasks(context)
+        Log.d("HomeScreen", "Obteniendo tareas")
     }
 
     // Mostrar el Toast cuando se obtengan las tareas
     LaunchedEffect(tasks) {
         if (tasks.isNotEmpty()) {
             Toast.makeText(context, "Tareas cargadas exitosamente", Toast.LENGTH_LONG).show()
+            Log.d("HomeScreen", "Tareas cargadas exitosamente")
         }
     }
 
@@ -52,12 +49,16 @@ fun HomeScreen() {
         Column(modifier = Modifier.padding(innerPadding)) {
             if (isLoading) {
                 CircularProgressIndicator(modifier = Modifier.align(Alignment.CenterHorizontally))
+                Log.d("HomeScreen", "Cargando tareas")
             } else if (errorMessage != null) {
                 Text(errorMessage!!, color = MaterialTheme.colorScheme.error)
+                Log.e("HomeScreen", "Error: $errorMessage")
             } else {
+                val incompleteTasks = tasks.filter { !it.completed }
                 LazyColumn {
-                    items(tasks) { task ->
-                        TaskItem(task)
+                    items(incompleteTasks) { task ->
+                        TaskItem(task, taskViewModel, context)
+                        Log.d("HomeScreen", "Mostrando tarea: ${task.name}")
                     }
                 }
             }
@@ -66,23 +67,26 @@ fun HomeScreen() {
 }
 
 @Composable
-fun TaskItem(task: Task, modifier: Modifier = Modifier) {
+fun TaskItem(task: Task, taskViewModel: TaskViewModel, context: Context, modifier: Modifier = Modifier) {
     Card(
         modifier = modifier.padding(dimensionResource(R.dimen.padding_small))
     ) {
         Row(
             verticalAlignment = Alignment.CenterVertically,
-            modifier = Modifier.fillMaxWidth().padding(dimensionResource(R.dimen.padding_small))
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(dimensionResource(R.dimen.padding_small))
         ) {
             Column(modifier = Modifier.weight(1f)) {
                 Text(text = task.name, style = MaterialTheme.typography.titleMedium)
                 Text(text = task.description, style = MaterialTheme.typography.bodyMedium)
-                Text(text = "Priority: ${task.priority}", style = MaterialTheme.typography.bodySmall)
+                Text(text = "Prioridad: ${task.priority}", style = MaterialTheme.typography.bodySmall)
             }
-            Log.d("Tarea Indicada ", task.name )
-            Button(onClick = { /* handle task completion */ }) {
-                Text(text = if (task.completed) "Completed"
-                else "Mark as Done")
+            Button(onClick = {
+                taskViewModel.updateTaskStatus(context, task.id, !task.completed)
+                Log.d("TaskItem", "Actualizando estado de la tarea: ${task.name}")
+            }) {
+                Text(text = if (task.completed) "Marcar como Incompleta" else "Marcar como Completa")
             }
         }
     }

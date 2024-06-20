@@ -58,4 +58,40 @@ class TaskViewModel : ViewModel() {
             }
         }
     }
+
+    fun updateTaskStatus(context: Context, taskId: Int, completed: Boolean) {
+        _isLoading.value = true
+        _errorMessage.value = null
+
+        viewModelScope.launch {
+            try {
+                val sharedPreferences = context.getSharedPreferences("my_prefs", Context.MODE_PRIVATE)
+                val token = sharedPreferences.getString("TOKEN", null) ?: throw Exception("Token not found")
+
+                Log.d("TaskViewModel", "Updating task status with token: $token")
+
+                val response = RetrofitInstance.api.updateTaskStatus(
+                    "Token $token",
+                    taskId,
+                    mapOf("completed" to completed)
+                )
+
+                if (response.isSuccessful) {
+                    fetchTasks(context)
+                    Log.d("TaskViewModel", "Task status updated successfully")
+                } else {
+                    val errorMsg = "Failed to update task status. Error code: ${response.code()}, Error message: ${response.message()}"
+                    _errorMessage.value = errorMsg
+                    Log.e("TaskViewModel", errorMsg)
+                }
+            } catch (e: Exception) {
+                val errorMsg = "An error occurred: ${e.message}"
+                _errorMessage.value = errorMsg
+                Log.e("TaskViewModel", errorMsg)
+            } finally {
+                _isLoading.value = false
+                Log.d("TaskViewModel", "Loading state set to false")
+            }
+        }
+    }
 }
