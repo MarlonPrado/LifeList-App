@@ -3,17 +3,23 @@ package com.example.jetpackcompose
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.compose.foundation.Image
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.NavigationBar
 import androidx.compose.material3.NavigationBarItem
+import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
@@ -42,6 +48,12 @@ class MainActivity : ComponentActivity() {
                 }
                 val navBackStackEntry by navController.currentBackStackEntryAsState()
                 val selectedDestination = navBackStackEntry?.destination?.route ?: MyAppRoute.LOGIN
+                Surface(
+                    modifier = Modifier.fillMaxSize(),
+                    color = MaterialTheme.colorScheme.background
+                ) {
+                }
+                GreetingImage()
 
                 MyAppContent(
                     navController = navController,
@@ -50,6 +62,18 @@ class MainActivity : ComponentActivity() {
                 )
             }
         }
+    }
+}
+@Composable
+fun GreetingImage(modifier: Modifier = Modifier) {
+    // Create a box to overlap image and texts
+    Box(modifier) {
+        Image(
+            painter = painterResource(id = R.drawable.fondo),
+            contentDescription = null,
+            contentScale = ContentScale.Crop,
+            alpha = 0.5F
+        )
     }
 }
 
