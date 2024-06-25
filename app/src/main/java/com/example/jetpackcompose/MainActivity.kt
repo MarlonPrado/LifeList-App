@@ -3,25 +3,39 @@ package com.example.jetpackcompose
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.compose.foundation.Image
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.NavigationBar
 import androidx.compose.material3.NavigationBarItem
+import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
+import com.example.jetpackcompose.navigation.MyAppNavigationActions
+import com.example.jetpackcompose.navigation.MyAppRoute
+import com.example.jetpackcompose.navigation.MyAppTopLevelDestination
+import com.example.jetpackcompose.navigation.TOP_LEVEL_DESTINATIONS
 import com.example.jetpackcompose.ui.theme.JetpackComposeTheme
+import com.example.jetpackcompose.views.HomeScreen
+import com.example.jetpackcompose.views.LoginScreen
+import com.example.jetpackcompose.views.ProfileScreen
+import com.example.jetpackcompose.views.TaskFinishedScreen
+import com.example.jetpackcompose.views.TaskScreen
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -33,7 +47,13 @@ class MainActivity : ComponentActivity() {
                     MyAppNavigationActions(navController)
                 }
                 val navBackStackEntry by navController.currentBackStackEntryAsState()
-                val selectedDestination = navBackStackEntry?.destination?.route ?: MyAppRoute.HOME
+                val selectedDestination = navBackStackEntry?.destination?.route ?: MyAppRoute.LOGIN
+                Surface(
+                    modifier = Modifier.fillMaxSize(),
+                    color = MaterialTheme.colorScheme.background
+                ) {
+                }
+                GreetingImage()
 
                 MyAppContent(
                     navController = navController,
@@ -42,6 +62,18 @@ class MainActivity : ComponentActivity() {
                 )
             }
         }
+    }
+}
+@Composable
+fun GreetingImage(modifier: Modifier = Modifier) {
+    // Create a box to overlap image and texts
+    Box(modifier) {
+        Image(
+            painter = painterResource(id = R.drawable.fondo),
+            contentDescription = null,
+            contentScale = ContentScale.Crop,
+            alpha = 0.5F
+        )
     }
 }
 
@@ -57,25 +89,30 @@ fun MyAppContent(
             NavHost(
                 modifier = Modifier.weight(1f),
                 navController = navController,
-                startDestination = MyAppRoute.HOME
+                startDestination = MyAppRoute.LOGIN
             ) {
+                composable(MyAppRoute.LOGIN) {
+                    LoginScreen(navController)
+                }
                 composable(MyAppRoute.HOME) {
-                    HomeScreen()
+                    HomeScreen(navController)
                 }
                 composable(MyAppRoute.TASK) {
-                    TaskScreen()
+                    TaskScreen(navController)
                 }
                 composable(MyAppRoute.TASKFINISHED) {
-                    TaskFinishedScreen()
+                    TaskFinishedScreen(navController)
                 }
                 composable(MyAppRoute.PROFILE) {
-                    ProfileScreen()
+                    ProfileScreen(navController)
                 }
             }
-            MyAppBottomNavigation(
-                selectedDestination = selectedDestination,
-                navigateTopLevelDestination = navigateTopLevelDestination
-            )
+            if (selectedDestination != MyAppRoute.LOGIN) {
+                MyAppBottomNavigation(
+                    selectedDestination = selectedDestination,
+                    navigateTopLevelDestination = navigateTopLevelDestination
+                )
+            }
         }
     }
 }
@@ -86,58 +123,17 @@ fun MyAppBottomNavigation(
     navigateTopLevelDestination: (MyAppTopLevelDestination) -> Unit
 ) {
     NavigationBar(modifier = Modifier.fillMaxWidth()) {
-        TOP_LEVEL_DESTINATIONS.forEach { destinations ->
+        TOP_LEVEL_DESTINATIONS.forEach { destination ->
             NavigationBarItem(
-                selected = selectedDestination == destinations.route,
-                onClick = { navigateTopLevelDestination(destinations) },
+                selected = selectedDestination == destination.route,
+                onClick = { navigateTopLevelDestination(destination) },
                 icon = {
                     Icon(
-                        imageVector = destinations.selectedIcon,
-                        contentDescription = stringResource(id = destinations.iconTextId)
+                        imageVector = destination.selectedIcon,
+                        contentDescription = stringResource(id = destination.iconTextId)
                     )
                 }
             )
         }
-    }
-}
-
-/**
- * Composable that displays what the UI of the app looks like in light theme in the design tab.
- */
-@Preview
-@Composable
-fun JetpackComposePreview() {
-    JetpackComposeTheme(darkTheme = false) {
-        val navController = rememberNavController()
-        val navigateAction = remember(navController) {
-            MyAppNavigationActions(navController)
-        }
-        val navBackStackEntry by navController.currentBackStackEntryAsState()
-        val selectedDestination = navBackStackEntry?.destination?.route ?: MyAppRoute.HOME
-
-        MyAppContent(
-            navController = navController,
-            selectedDestination = selectedDestination,
-            navigateTopLevelDestination = navigateAction::navigateTo
-        )
-    }
-}
-
-@Preview
-@Composable
-fun JetpackComposeThemePreview() {
-    JetpackComposeTheme(darkTheme = true) {
-        val navController = rememberNavController()
-        val navigateAction = remember(navController) {
-            MyAppNavigationActions(navController)
-        }
-        val navBackStackEntry by navController.currentBackStackEntryAsState()
-        val selectedDestination = navBackStackEntry?.destination?.route ?: MyAppRoute.HOME
-
-        MyAppContent(
-            navController = navController,
-            selectedDestination = selectedDestination,
-            navigateTopLevelDestination = navigateAction::navigateTo
-        )
     }
 }
